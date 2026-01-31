@@ -85,7 +85,7 @@ fn players_input() -> Result<String, Error> {
 
 fn start_round() {
     let mut round_state = RoundState::RoundStarted;
-    let secret_word = get_secret_word();
+    let secret_word = get_secret_word().to_lowercase();
     let secret_word_chars: HashSet<char> = secret_word.chars().collect();
     let mut correct_guesses: HashSet<char> = HashSet::new();
     let mut wrong_guesses: HashSet<char> = HashSet::new();
@@ -124,6 +124,7 @@ fn start_round() {
             },
         };
         let guess = guess.unwrap();
+        let guess = guess.trim().to_lowercase();
         if guess.chars().count() != 1 {
             round_state = WrongLength;
             continue;
@@ -161,7 +162,7 @@ fn start_round() {
 }
 
 fn is_russian_letter(c: &str) -> bool {
-    let pattern = r"[А-Яа-я]";
+    let pattern = r"[А-Яа-яЁё]";
     let regex = Regex::new(pattern).unwrap();
     regex.is_match(c)
 }
